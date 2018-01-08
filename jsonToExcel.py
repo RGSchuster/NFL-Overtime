@@ -8,4 +8,3 @@ with pd.ExcelWriter('seasons.xlsx') as writer:
         filename = 'C:\\Users\\Raphi\\Documents\\NFL-Overtime\\json files\\' + sheet + '.json'
         with open(filename) as f:
             (pd.DataFrame(json.loads(json.load(f))).T).to_excel(writer,sheet_name=sheet)
-        
