@@ -6,6 +6,7 @@
 import bs4 as bs
 import urllib.request
 import csv
+import pandas as pd
 
 fullLeague = []
 for year in range(1974,2018):
@@ -26,12 +27,13 @@ for year in range(1974,2018):
             else:
                 #on team name
                 (league[i]).append(xx.a.string.split()[-1])
-    del league[-1] #this deletes an extra empty list is added to the end
+    league.pop() #deletes an extra empty list that is added to the end
     fullLeague.append(league)
 
 #############
-#this works for output to csv:
+#this KIND OF works for output to csv:
 #
-with open('divisions.csv','w') as f:
+with open('divisions.csv','w',newline='') as f:
     writer = csv.writer(f)
     writer.writerows(fullLeague)
+    

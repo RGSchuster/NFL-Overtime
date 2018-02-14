@@ -15,6 +15,8 @@ def adToRecords(tr,recordTracker):
     #Adds 1 to the W/L/T for the team, defaults to 0 (then adds 1) if team is not in dictionary already
     recordTracker[getTeamName(tr)] = recordTracker.get(getTeamName(tr),0) + 1
 
+yearErrorCounter = []
+
 for year in range(1974,2018): #OT was added in 1974.
     winners, losers, ties = {},{},{}
     teamNames =  {}
@@ -39,7 +41,7 @@ for year in range(1974,2018): #OT was added in 1974.
         print(year,week) #Print the weeks so progress can be visualized while running
 
         for eachGame in soup.find_all('table', class_='teams'):
-            #I check for OT first because of the way the website stores information in the tables
+            #Check for OT first because of the way the website stores information in the tables
             OTgame = False
             for td in eachGame.find_all('td', class_='right'):
                 if td.string != None: #if the game doesn't go to OT, it is reported as "none" and causes .strip() to fail
@@ -60,10 +62,14 @@ for year in range(1974,2018): #OT was added in 1974.
                 for tr in eachGame.find_all('tr', class_='winner'):
                     adToRecords(tr,winners)
                 for tr in eachGame.find_all('tr', class_='loser'):
-                    adToRecords(tr,losers)                
+                    adToRecords(tr,losers)
     #combine to one dictionary
     seasonRecord = dict((k,[winners.get(k,0)] + [losers.get(k,0)] + [ties.get(k,0)]) for k in teamNames.keys())
-    
+
+    if sum(seasonRecord['Bears']) != (len(weekCount) - 1):
+        #Sometimes a week's page will go down, causing the data to not be scraped
+        yearErrorCounter.append(year)
+        
 ##    #export to csv files ##############(not in use)
 ##    fileName = str(year)+'.csv'
 ##    with open(fileName,'w') as f:
@@ -72,7 +78,10 @@ for year in range(1974,2018): #OT was added in 1974.
 ##            writer.writerow([key,value])
     
     #export to json files
-    fileName = 'C:\\Users\\Raphi\\Documents\\NFL-Overtime\\Records by year\\' + str(year) + '.json'
-    df = pd.DataFrame(seasonRecord,index=['W','L','T'])
-    with open(fileName,'w') as f:
-        json.dump(df.to_json(),f)
+##    fileName = 'Records by year\\' + str(year) + '.json'
+##    df = pd.DataFrame(seasonRecord,index=['W','L','T'])
+##    with open(fileName,'w') as f:
+##        json.dump(df.to_json(),f)
+
+print("Double check these years:")
+print(yearErrorCounter)
