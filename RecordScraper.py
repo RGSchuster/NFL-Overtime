@@ -78,10 +78,10 @@ for year in range(1974,2018): #OT was added in 1974.
 ##            writer.writerow([key,value])
     
     #export to json files
-##    fileName = 'Records by year\\' + str(year) + '.json'
-##    df = pd.DataFrame(seasonRecord,index=['W','L','T'])
-##    with open(fileName,'w') as f:
-##        json.dump(df.to_json(),f)
+    fileName = 'Records by year\\' + str(year) + '.json'
+    df = pd.DataFrame(seasonRecord,index=['W','L','T'])
+    with open(fileName,'w') as f:
+        json.dump(df.to_json(),f)
 
 print("Double check these years:")
 print(yearErrorCounter)
