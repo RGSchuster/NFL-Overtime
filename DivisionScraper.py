@@ -10,7 +10,7 @@ import json
 import pandas as pd
 
 fullLeague = []
-for year in range(1974,2019):
+for year in range(1974,2018):
     
     sauce = urllib.request.urlopen('https://www.pro-football-reference.com/years/' + str(year) + '/index.htm').read()
     soup = bs.BeautifulSoup(sauce,'lxml')
